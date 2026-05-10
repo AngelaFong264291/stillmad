@@ -16,17 +16,25 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mq = MediaQuery.of(context);
+    final sw = mq.size.width;
+    final sf = (sw / 390).clamp(0.8, 1.3);
+
     return Scaffold(
       backgroundColor: AppTheme.ink,
       body: Stack(
         children: [
-          Positioned.fill(
+          Positioned(
+            top: 47,    // ← tweak this to push bg lower
+            left: 0,
+            right: 0,
+            bottom: -30, // ← keep same number as top (negative)
             child: Image.asset(
               'assets/images/splash_bg.png',
               fit: BoxFit.cover,
               alignment: Alignment.topCenter,
             ),
-          ),
+  ),
           Positioned.fill(
             child: Container(
               decoration: BoxDecoration(
@@ -45,104 +53,122 @@ class SplashScreen extends StatelessWidget {
             ),
           ),
           SafeArea(
-            child: Column(
-              children: [
-                const Spacer(),
-                const SizedBox(height: 430),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final ah = constraints.maxHeight; // available height inside SafeArea
 
-                // Glowing tagline
-                Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Text(
-                      'Beat the stress. Not people.',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontFamily: 'Georgia',
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 1.3,
-                        color: Colors.transparent,
-                        shadows: [
-                          Shadow(
-                            color: const Color(0xFFFF2200).withValues(alpha: 0.85),
-                            blurRadius: 40,
+                return SingleChildScrollView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(minHeight: ah),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        // Tagline
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: sw * 0.08),
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Text(
+                                'Beat the stress. Not people.',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontFamily: 'Georgia',
+                                  fontSize: 12 * sf,
+                                  letterSpacing: 1.3,
+                                  color: Colors.transparent,
+                                  shadows: [
+                                    Shadow(
+                                      color: const Color(0xFFFF2200).withValues(alpha: 0.85),
+                                      blurRadius: 40,
+                                    ),
+                                    Shadow(
+                                      color: const Color(0xFFFF4400).withValues(alpha: 0.5),
+                                      blurRadius: 80,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              ShaderMask(
+                                shaderCallback: (bounds) => const LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [Color(0xFFFFAA66), Color(0xFFDD2200)],
+                                ).createShader(bounds),
+                                child: Text(
+                                  'Beat the stress. Not people.',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontFamily: 'Georgia',
+                                    fontSize: 17 * sf,
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: 1.6,
+                                    color: Colors.white,
+                                    shadows: [
+                                      Shadow(
+                                        color: const Color(0xFFFF3300).withValues(alpha: 0.9),
+                                        blurRadius: 14,
+                                      ),
+                                      Shadow(
+                                        color: const Color(0xFFFF1100).withValues(alpha: 0.6),
+                                        blurRadius: 30,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                          Shadow(
-                            color: const Color(0xFFFF4400).withValues(alpha: 0.5),
-                            blurRadius: 80,
-                          ),
-                        ],
-                      ),
-                    ),
-                    ShaderMask(
-                      shaderCallback: (bounds) => const LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Color(0xFFFFAA66),
-                          Color(0xFFDD2200),
-                        ],
-                      ).createShader(bounds),
-                      child: Text(
-                        'Beat the stress. Not people.',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontFamily: 'Georgia',
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 1.6,
-                          color: Colors.white,
-                          shadows: [
-                            Shadow(
-                              color: const Color(0xFFFF3300).withValues(alpha: 0.9),
-                              blurRadius: 14,
+                        ),
+
+                        SizedBox(height: ah * 0.018),
+
+                        // Ember glow + button
+                        Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Container(
+                              height: ah * 0.14,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                gradient: RadialGradient(
+                                  colors: [
+                                    const Color(0xFFFF4400).withValues(alpha: 0.28),
+                                    Colors.transparent,
+                                  ],
+                                  radius: 0.75,
+                                ),
+                              ),
                             ),
-                            Shadow(
-                              color: const Color(0xFFFF1100).withValues(alpha: 0.6),
-                              blurRadius: 30,
+                            Center(
+                              child: ConstrainedBox(
+                                constraints: BoxConstraints(
+                                  maxWidth: (sw * 0.88).clamp(260, 340),
+                                ),
+                                child: ParchmentButton(
+                                  scaleFactor: sf,
+                                  onPressed: () => _enterApp(context),
+                                ),
+                              ),
                             ),
                           ],
                         ),
-                      ),
-                    ),
-                  ],
-                ),
 
-                const SizedBox(height: 10),
+                        SizedBox(height: ah * 0.02),
 
-                Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Container(
-                      height: 140,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        gradient: RadialGradient(
-                          colors: [
-                            const Color(0xFFFF4400).withValues(alpha: 0.28),
-                            Colors.transparent,
-                          ],
-                          radius: 0.75,
+                        _PrivacyTermsLinks(
+                          scaleFactor: sf,
+                          onPrivacyTap: () => _openPrivacy(context),
+                          onTermsTap: () => _openTerms(context),
                         ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 42),
-                      child: ParchmentButton(
-                        onPressed: () => _enterApp(context),
-                      ),
-                    ),
-                  ],
-                ),
 
-                const SizedBox(height: 20),
-                _PrivacyTermsLinks(
-                  onPrivacyTap: () => _openPrivacy(context),
-                  onTermsTap: () => _openTerms(context),
-                ),
-                const SizedBox(height: 36),
-              ],
+                        SizedBox(height: ah * 0.04),
+                      ],
+                    ),
+                  ),
+                );
+              },
             ),
           ),
         ],
@@ -155,7 +181,8 @@ class SplashScreen extends StatelessWidget {
 
 class ParchmentButton extends StatefulWidget {
   final VoidCallback? onPressed;
-  const ParchmentButton({super.key, this.onPressed});
+  final double scaleFactor;
+  const ParchmentButton({super.key, this.onPressed, this.scaleFactor = 1.0});
 
   @override
   State<ParchmentButton> createState() => _ParchmentButtonState();
@@ -187,6 +214,8 @@ class _ParchmentButtonState extends State<ParchmentButton>
 
   @override
   Widget build(BuildContext context) {
+    final sf = widget.scaleFactor;
+
     return GestureDetector(
       onTapDown: (_) => setState(() => _pressed = true),
       onTapUp: (_) => setState(() => _pressed = false),
@@ -201,13 +230,12 @@ class _ParchmentButtonState extends State<ParchmentButton>
           builder: (context, _) {
             final ember = _pressed ? 0.3 : _emberAnimation.value;
 
-            // Parchment colors darken and desaturate when pressed
             final parchmentColors = _pressed
                 ? const [
-                    Color(0xFF8C5A20), // dark pressed top
-                    Color(0xFF7A4415), // darker mid
-                    Color(0xFF6A3410), // deep shadow
-                    Color(0xFF7A4018), // pressed bottom
+                    Color(0xFF8C5A20),
+                    Color(0xFF7A4415),
+                    Color(0xFF6A3410),
+                    Color(0xFF7A4018),
                   ]
                 : const [
                     Color(0xFFD4924A),
@@ -223,11 +251,10 @@ class _ParchmentButtonState extends State<ParchmentButton>
               ),
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 100),
-                margin: const EdgeInsets.all(6),
+                margin: EdgeInsets.all(6 * sf),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(6),
                   gradient: LinearGradient(
-                    // Flip gradient direction when pressed — light comes from below
                     begin: _pressed ? Alignment.bottomLeft : Alignment.topLeft,
                     end: _pressed ? Alignment.topRight : Alignment.bottomRight,
                     colors: parchmentColors,
@@ -236,7 +263,6 @@ class _ParchmentButtonState extends State<ParchmentButton>
                 ),
                 child: Stack(
                   children: [
-                    // Inner shadow overlay when pressed
                     if (_pressed)
                       Positioned.fill(
                         child: Container(
@@ -255,22 +281,21 @@ class _ParchmentButtonState extends State<ParchmentButton>
                       ),
                     Padding(
                       padding: EdgeInsets.symmetric(
-                        horizontal: 16,
-                        // Nudge content down 2px when pressed for depth feel
-                        vertical: _pressed ? 15 : 14,
+                        horizontal: 14 * sf,
+                        vertical: (_pressed ? 15 : 13) * sf,
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          _StampSeal(pressed: _pressed),
-                          const SizedBox(width: 14),
+                          _StampSeal(pressed: _pressed, scaleFactor: sf),
+                          SizedBox(width: 12 * sf),
                           AnimatedDefaultTextStyle(
                             duration: const Duration(milliseconds: 100),
                             style: TextStyle(
                               fontFamily: 'Georgia',
-                              fontSize: 20,
+                              fontSize: 19 * sf,
                               fontWeight: FontWeight.w700,
-                              // Text darkens when pressed
                               color: _pressed
                                   ? const Color(0xFF3A0D00)
                                   : const Color(0xFF5C1A00),
@@ -288,8 +313,8 @@ class _ParchmentButtonState extends State<ParchmentButton>
                             ),
                             child: const Text('Start Releasing'),
                           ),
-                          const SizedBox(width: 16),
-                          _ParchmentArrow(pressed: _pressed),
+                          SizedBox(width: 10 * sf),
+                          _ParchmentArrow(pressed: _pressed, scaleFactor: sf),
                         ],
                       ),
                     ),
@@ -317,47 +342,31 @@ class _BurnedEdgePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final path = _buildRoughRect(size);
 
-    // Outer bloom — much dimmer when pressed
-    canvas.drawPath(
-      path,
-      Paint()
-        ..color = const Color(0xFFFF4400).withValues(alpha: 0.55 * emberIntensity)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = pressed ? 10 : 18
-        ..maskFilter = MaskFilter.blur(BlurStyle.normal, pressed ? 6 : 14),
-    );
+    canvas.drawPath(path, Paint()
+      ..color = const Color(0xFFFF4400).withValues(alpha: 0.55 * emberIntensity)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = pressed ? 10 : 18
+      ..maskFilter = MaskFilter.blur(BlurStyle.normal, pressed ? 6 : 14));
 
-    // Mid glow
-    canvas.drawPath(
-      path,
-      Paint()
-        ..color = const Color(0xFFFF6600).withValues(alpha: 0.65 * emberIntensity)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = pressed ? 4 : 8
-        ..maskFilter = MaskFilter.blur(BlurStyle.normal, pressed ? 2 : 5),
-    );
+    canvas.drawPath(path, Paint()
+      ..color = const Color(0xFFFF6600).withValues(alpha: 0.65 * emberIntensity)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = pressed ? 4 : 8
+      ..maskFilter = MaskFilter.blur(BlurStyle.normal, pressed ? 2 : 5));
 
-    // Tight bright core — hidden when pressed
     if (!pressed)
-      canvas.drawPath(
-        path,
-        Paint()
-          ..color = const Color(0xFFFFAA44).withValues(alpha: 0.75 * emberIntensity)
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 2.5
-          ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 1.5),
-      );
-
-    // Charred edge — darker when pressed
-    canvas.drawPath(
-      path,
-      Paint()
-        ..color = pressed
-            ? const Color(0xFF0D0400).withValues(alpha: 0.95)
-            : const Color(0xFF1A0800).withValues(alpha: 0.85)
+      canvas.drawPath(path, Paint()
+        ..color = const Color(0xFFFFAA44).withValues(alpha: 0.75 * emberIntensity)
         ..style = PaintingStyle.stroke
-        ..strokeWidth = pressed ? 2.2 : 1.5,
-    );
+        ..strokeWidth = 2.5
+        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 1.5));
+
+    canvas.drawPath(path, Paint()
+      ..color = pressed
+          ? const Color(0xFF0D0400).withValues(alpha: 0.95)
+          : const Color(0xFF1A0800).withValues(alpha: 0.85)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = pressed ? 2.2 : 1.5);
   }
 
   Path _buildRoughRect(Size size) {
@@ -386,19 +395,19 @@ class _BurnedEdgePainter extends CustomPainter {
 
 class _StampSeal extends StatelessWidget {
   final bool pressed;
-  const _StampSeal({required this.pressed});
+  final double scaleFactor;
+  const _StampSeal({required this.pressed, required this.scaleFactor});
 
   @override
   Widget build(BuildContext context) {
+    final size = 36 * scaleFactor;
     return AnimatedContainer(
       duration: const Duration(milliseconds: 100),
-      width: 38,
-      height: 38,
+      width: size,
+      height: size,
       decoration: BoxDecoration(
         border: Border.all(
-          color: pressed
-              ? const Color(0xFF5C1000)
-              : const Color(0xFF8B1A00),
+          color: pressed ? const Color(0xFF5C1000) : const Color(0xFF8B1A00),
           width: pressed ? 1.5 : 2,
         ),
         borderRadius: BorderRadius.circular(3),
@@ -410,10 +419,8 @@ class _StampSeal extends StatelessWidget {
         child: Text(
           '放',
           style: TextStyle(
-            fontSize: 20,
-            color: pressed
-                ? const Color(0xFF5C1000)
-                : const Color(0xFF8B1A00),
+            fontSize: 18 * scaleFactor,
+            color: pressed ? const Color(0xFF5C1000) : const Color(0xFF8B1A00),
             fontWeight: FontWeight.w700,
             height: 1.0,
           ),
@@ -427,15 +434,16 @@ class _StampSeal extends StatelessWidget {
 
 class _ParchmentArrow extends StatelessWidget {
   final bool pressed;
-  const _ParchmentArrow({required this.pressed});
+  final double scaleFactor;
+  const _ParchmentArrow({required this.pressed, required this.scaleFactor});
 
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      size: const Size(34, 18),
+      size: Size(32 * scaleFactor, 16 * scaleFactor),
       painter: _ArrowPainter(
         color: pressed ? const Color(0xFF3A0D00) : const Color(0xFF5C1A00),
-        strokeWidth: pressed ? 1.8 : 2.2,
+        strokeWidth: (pressed ? 1.8 : 2.2) * scaleFactor,
       ),
     );
   }
@@ -444,7 +452,6 @@ class _ParchmentArrow extends StatelessWidget {
 class _ArrowPainter extends CustomPainter {
   final Color color;
   final double strokeWidth;
-
   const _ArrowPainter({required this.color, required this.strokeWidth});
 
   @override
@@ -480,9 +487,11 @@ class _ArrowPainter extends CustomPainter {
 class _PrivacyTermsLinks extends StatelessWidget {
   final VoidCallback onPrivacyTap;
   final VoidCallback onTermsTap;
+  final double scaleFactor;
   const _PrivacyTermsLinks({
     required this.onPrivacyTap,
     required this.onTermsTap,
+    required this.scaleFactor,
   });
 
   @override
@@ -494,28 +503,28 @@ class _PrivacyTermsLinks extends StatelessWidget {
           textAlign: TextAlign.center,
           style: TextStyle(
             color: AppTheme.muted.withValues(alpha: 0.80),
-            fontSize: 13,
+            fontSize: 12 * scaleFactor,
             fontWeight: FontWeight.w400,
             letterSpacing: 0.15,
           ),
         ),
-        const SizedBox(height: 10),
+        SizedBox(height: 8 * scaleFactor),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _FooterLink(label: 'Privacy', onTap: onPrivacyTap),
+            _FooterLink(label: 'Privacy', onTap: onPrivacyTap, scaleFactor: scaleFactor),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: EdgeInsets.symmetric(horizontal: 8 * scaleFactor),
               child: Text(
                 '·',
                 style: TextStyle(
                   color: AppTheme.muted.withValues(alpha: 0.5),
-                  fontSize: 15,
+                  fontSize: 14 * scaleFactor,
                   fontWeight: FontWeight.w700,
                 ),
               ),
             ),
-            _FooterLink(label: 'Terms', onTap: onTermsTap),
+            _FooterLink(label: 'Terms', onTap: onTermsTap, scaleFactor: scaleFactor),
           ],
         ),
       ],
@@ -526,7 +535,12 @@ class _PrivacyTermsLinks extends StatelessWidget {
 class _FooterLink extends StatelessWidget {
   final String label;
   final VoidCallback onTap;
-  const _FooterLink({required this.label, required this.onTap});
+  final double scaleFactor;
+  const _FooterLink({
+    required this.label,
+    required this.onTap,
+    required this.scaleFactor,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -534,12 +548,15 @@ class _FooterLink extends StatelessWidget {
       borderRadius: BorderRadius.circular(999),
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 6),
+        padding: EdgeInsets.symmetric(
+          horizontal: 4 * scaleFactor,
+          vertical: 6 * scaleFactor,
+        ),
         child: Text(
           label,
           style: TextStyle(
             color: AppTheme.muted.withValues(alpha: 0.80),
-            fontSize: 13,
+            fontSize: 12 * scaleFactor,
             fontWeight: FontWeight.w500,
             decoration: TextDecoration.underline,
             decorationColor: AppTheme.muted.withValues(alpha: 0.35),
