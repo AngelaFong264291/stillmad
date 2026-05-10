@@ -4,7 +4,7 @@ import 'package:stillmad/core/theme/app_theme.dart';
 class NeonCard extends StatelessWidget {
   const NeonCard({
     required this.child,
-    this.color = AppTheme.cyan,
+    this.color = AppTheme.neonRed,
     this.onTap,
     super.key,
   });

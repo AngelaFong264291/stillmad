@@ -9,7 +9,7 @@ enum ReleaseMode {
     description: 'A kinetic ritual for when the feeling needs impact.',
     route: AppRoutes.breakIt,
     icon: Icons.bolt,
-    color: AppTheme.cyan,
+    color: AppTheme.neonRed,
   ),
   voidIt(
     title: 'Void it',
@@ -17,7 +17,7 @@ enum ReleaseMode {
     description: 'Drop the thought into a quiet black hole.',
     route: AppRoutes.voidIt,
     icon: Icons.blur_on,
-    color: AppTheme.acid,
+    color: AppTheme.ink,
   ),
   burnIt(
     title: 'Burn it',
@@ -33,7 +33,7 @@ enum ReleaseMode {
     description: 'Use motion, breath, and rhythm to discharge.',
     route: AppRoutes.moveIt,
     icon: Icons.directions_run,
-    color: AppTheme.rose,
+    color: AppTheme.neonRed,
   ),
   tossItAway(
     title: 'Toss it away',

@@ -55,7 +55,7 @@ class HomeScreen extends StatelessWidget {
                   child: GlassPanel(
                     child: Row(
                       children: [
-                        const Icon(Icons.lock_outline, color: AppTheme.acid),
+                        const Icon(Icons.lock_outline, color: AppTheme.paper),
                         const SizedBox(width: 14),
                         Expanded(
                           child: Text(

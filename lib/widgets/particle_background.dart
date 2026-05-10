@@ -62,9 +62,9 @@ class _ParticlePainter extends CustomPainter {
       final y = ((cos(seed * 1.7) * 0.5 + 0.5 + progress) % 1) * size.height;
       final radius = 1.4 + (i % 5) * 0.55;
       final color = switch (i % 4) {
-        0 => AppTheme.cyan,
-        1 => AppTheme.acid,
-        2 => AppTheme.rose,
+        0 => AppTheme.neonRed,
+        1 => AppTheme.ember,
+        2 => AppTheme.ink,
         _ => AppTheme.ember,
       };
 
