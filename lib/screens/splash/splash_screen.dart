@@ -25,7 +25,7 @@ class SplashScreen extends StatelessWidget {
       body: Stack(
         children: [
           Positioned(
-            top: 47,    // ← tweak this to push bg lower
+            top: 47, // ← tweak this to push bg lower
             left: 0,
             right: 0,
             bottom: -30, // ← keep same number as top (negative)
@@ -34,7 +34,7 @@ class SplashScreen extends StatelessWidget {
               fit: BoxFit.cover,
               alignment: Alignment.topCenter,
             ),
-  ),
+          ),
           Positioned.fill(
             child: Container(
               decoration: BoxDecoration(
@@ -55,7 +55,8 @@ class SplashScreen extends StatelessWidget {
           SafeArea(
             child: LayoutBuilder(
               builder: (context, constraints) {
-                final ah = constraints.maxHeight; // available height inside SafeArea
+                final ah =
+                    constraints.maxHeight; // available height inside SafeArea
 
                 return SingleChildScrollView(
                   physics: const NeverScrollableScrollPhysics(),
@@ -80,22 +81,30 @@ class SplashScreen extends StatelessWidget {
                                   color: Colors.transparent,
                                   shadows: [
                                     Shadow(
-                                      color: const Color(0xFFFF2200).withValues(alpha: 0.85),
+                                      color: const Color(
+                                        0xFFFF2200,
+                                      ).withValues(alpha: 0.85),
                                       blurRadius: 40,
                                     ),
                                     Shadow(
-                                      color: const Color(0xFFFF4400).withValues(alpha: 0.5),
+                                      color: const Color(
+                                        0xFFFF4400,
+                                      ).withValues(alpha: 0.5),
                                       blurRadius: 80,
                                     ),
                                   ],
                                 ),
                               ),
                               ShaderMask(
-                                shaderCallback: (bounds) => const LinearGradient(
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  colors: [Color(0xFFFFAA66), Color(0xFFDD2200)],
-                                ).createShader(bounds),
+                                shaderCallback: (bounds) =>
+                                    const LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [
+                                        Color(0xFFFFAA66),
+                                        Color(0xFFDD2200),
+                                      ],
+                                    ).createShader(bounds),
                                 child: Text(
                                   'Beat the stress. Not people.',
                                   textAlign: TextAlign.center,
@@ -107,11 +116,15 @@ class SplashScreen extends StatelessWidget {
                                     color: Colors.white,
                                     shadows: [
                                       Shadow(
-                                        color: const Color(0xFFFF3300).withValues(alpha: 0.9),
+                                        color: const Color(
+                                          0xFFFF3300,
+                                        ).withValues(alpha: 0.9),
                                         blurRadius: 14,
                                       ),
                                       Shadow(
-                                        color: const Color(0xFFFF1100).withValues(alpha: 0.6),
+                                        color: const Color(
+                                          0xFFFF1100,
+                                        ).withValues(alpha: 0.6),
                                         blurRadius: 30,
                                       ),
                                     ],
@@ -134,7 +147,9 @@ class SplashScreen extends StatelessWidget {
                               decoration: BoxDecoration(
                                 gradient: RadialGradient(
                                   colors: [
-                                    const Color(0xFFFF4400).withValues(alpha: 0.28),
+                                    const Color(
+                                      0xFFFF4400,
+                                    ).withValues(alpha: 0.28),
                                     Colors.transparent,
                                   ],
                                   radius: 0.75,
@@ -286,32 +301,38 @@ class _ParchmentButtonState extends State<ParchmentButton>
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
+                        mainAxisSize: MainAxisSize.max,
                         children: [
                           _StampSeal(pressed: _pressed, scaleFactor: sf),
                           SizedBox(width: 12 * sf),
-                          AnimatedDefaultTextStyle(
-                            duration: const Duration(milliseconds: 100),
-                            style: TextStyle(
-                              fontFamily: 'Georgia',
-                              fontSize: 19 * sf,
-                              fontWeight: FontWeight.w700,
-                              color: _pressed
-                                  ? const Color(0xFF3A0D00)
-                                  : const Color(0xFF5C1A00),
-                              letterSpacing: 0.3,
-                              shadows: _pressed
-                                  ? []
-                                  : [
-                                      Shadow(
-                                        color: const Color(0xFF3A0800)
-                                            .withValues(alpha: 0.45),
-                                        offset: const Offset(1, 1.5),
-                                        blurRadius: 2,
-                                      ),
-                                    ],
+                          Expanded(
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: AnimatedDefaultTextStyle(
+                                duration: const Duration(milliseconds: 100),
+                                style: TextStyle(
+                                  fontFamily: 'Georgia',
+                                  fontSize: 19 * sf,
+                                  fontWeight: FontWeight.w700,
+                                  color: _pressed
+                                      ? const Color(0xFF3A0D00)
+                                      : const Color(0xFF5C1A00),
+                                  letterSpacing: 0.3,
+                                  shadows: _pressed
+                                      ? []
+                                      : [
+                                          Shadow(
+                                            color: const Color(
+                                              0xFF3A0800,
+                                            ).withValues(alpha: 0.45),
+                                            offset: const Offset(1, 1.5),
+                                            blurRadius: 2,
+                                          ),
+                                        ],
+                                ),
+                                child: const Text('Start Releasing'),
+                              ),
                             ),
-                            child: const Text('Start Releasing'),
                           ),
                           SizedBox(width: 10 * sf),
                           _ParchmentArrow(pressed: _pressed, scaleFactor: sf),
@@ -342,31 +363,50 @@ class _BurnedEdgePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final path = _buildRoughRect(size);
 
-    canvas.drawPath(path, Paint()
-      ..color = const Color(0xFFFF4400).withValues(alpha: 0.55 * emberIntensity)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = pressed ? 10 : 18
-      ..maskFilter = MaskFilter.blur(BlurStyle.normal, pressed ? 6 : 14));
-
-    canvas.drawPath(path, Paint()
-      ..color = const Color(0xFFFF6600).withValues(alpha: 0.65 * emberIntensity)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = pressed ? 4 : 8
-      ..maskFilter = MaskFilter.blur(BlurStyle.normal, pressed ? 2 : 5));
-
-    if (!pressed)
-      canvas.drawPath(path, Paint()
-        ..color = const Color(0xFFFFAA44).withValues(alpha: 0.75 * emberIntensity)
+    canvas.drawPath(
+      path,
+      Paint()
+        ..color = const Color(
+          0xFFFF4400,
+        ).withValues(alpha: 0.55 * emberIntensity)
         ..style = PaintingStyle.stroke
-        ..strokeWidth = 2.5
-        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 1.5));
+        ..strokeWidth = pressed ? 10 : 18
+        ..maskFilter = MaskFilter.blur(BlurStyle.normal, pressed ? 6 : 14),
+    );
 
-    canvas.drawPath(path, Paint()
-      ..color = pressed
-          ? const Color(0xFF0D0400).withValues(alpha: 0.95)
-          : const Color(0xFF1A0800).withValues(alpha: 0.85)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = pressed ? 2.2 : 1.5);
+    canvas.drawPath(
+      path,
+      Paint()
+        ..color = const Color(
+          0xFFFF6600,
+        ).withValues(alpha: 0.65 * emberIntensity)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = pressed ? 4 : 8
+        ..maskFilter = MaskFilter.blur(BlurStyle.normal, pressed ? 2 : 5),
+    );
+
+    if (!pressed) {
+      canvas.drawPath(
+        path,
+        Paint()
+          ..color = const Color(
+            0xFFFFAA44,
+          ).withValues(alpha: 0.75 * emberIntensity)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 2.5
+          ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 1.5),
+      );
+    }
+
+    canvas.drawPath(
+      path,
+      Paint()
+        ..color = pressed
+            ? const Color(0xFF0D0400).withValues(alpha: 0.95)
+            : const Color(0xFF1A0800).withValues(alpha: 0.85)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = pressed ? 2.2 : 1.5,
+    );
   }
 
   Path _buildRoughRect(Size size) {
@@ -378,10 +418,18 @@ class _BurnedEdgePainter extends CustomPainter {
     double j() => (_rng.nextDouble() - 0.5) * jitter * 2;
 
     path.moveTo(j(), j());
-    for (int i = 1; i <= steps; i++) path.lineTo((w / steps) * i + j(), j());
-    for (int i = 1; i <= steps; i++) path.lineTo(w + j(), (h / steps) * i + j());
-    for (int i = steps - 1; i >= 0; i--) path.lineTo((w / steps) * i + j(), h + j());
-    for (int i = steps - 1; i >= 0; i--) path.lineTo(j(), (h / steps) * i + j());
+    for (int i = 1; i <= steps; i++) {
+      path.lineTo((w / steps) * i + j(), j());
+    }
+    for (int i = 1; i <= steps; i++) {
+      path.lineTo(w + j(), (h / steps) * i + j());
+    }
+    for (int i = steps - 1; i >= 0; i--) {
+      path.lineTo((w / steps) * i + j(), h + j());
+    }
+    for (int i = steps - 1; i >= 0; i--) {
+      path.lineTo(j(), (h / steps) * i + j());
+    }
     path.close();
     return path;
   }
@@ -512,7 +560,11 @@ class _PrivacyTermsLinks extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _FooterLink(label: 'Privacy', onTap: onPrivacyTap, scaleFactor: scaleFactor),
+            _FooterLink(
+              label: 'Privacy',
+              onTap: onPrivacyTap,
+              scaleFactor: scaleFactor,
+            ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 8 * scaleFactor),
               child: Text(
@@ -524,7 +576,11 @@ class _PrivacyTermsLinks extends StatelessWidget {
                 ),
               ),
             ),
-            _FooterLink(label: 'Terms', onTap: onTermsTap, scaleFactor: scaleFactor),
+            _FooterLink(
+              label: 'Terms',
+              onTap: onTermsTap,
+              scaleFactor: scaleFactor,
+            ),
           ],
         ),
       ],

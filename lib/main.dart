@@ -5,5 +5,5 @@ export 'package:stillmad/app/app.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const StillmadApp());
+  runApp(const VentApp());
 }

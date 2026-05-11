@@ -27,7 +27,7 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          'Stillmad',
+                          'VENT 躁',
                           style: Theme.of(context).textTheme.displaySmall,
                         ),
                       ),

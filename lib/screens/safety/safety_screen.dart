@@ -23,7 +23,7 @@ class SafetyScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'Stillmad is for emotional release, not self-harm, intimidation, or breaking real things. If the feeling is unsafe, step away from the phone and contact someone you trust or local emergency support.',
+                    'VENT 躁 is for emotional release, not self-harm, intimidation, or breaking real things. If the feeling is unsafe, step away from the phone and contact someone you trust or local emergency support.',
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                 ],

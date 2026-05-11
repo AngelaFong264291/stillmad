@@ -7,8 +7,8 @@ import 'package:stillmad/services/haptic_service.dart';
 import 'package:stillmad/services/privacy_service.dart';
 import 'package:stillmad/services/sound_service.dart';
 
-class StillmadApp extends StatelessWidget {
-  const StillmadApp({super.key});
+class VentApp extends StatelessWidget {
+  const VentApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class StillmadApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => PrivacyService()..load()),
       ],
       child: MaterialApp(
-        title: 'Stillmad',
+        title: 'VENT 躁',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.dark(),
         initialRoute: AppRoutes.splash,
